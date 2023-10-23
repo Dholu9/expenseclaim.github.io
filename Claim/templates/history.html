@@ -1,0 +1,83 @@
+{% extends 'base.html' %} 
+
+{% block title %}Data{% endblock %}
+
+{% block content %} 
+<div class="col-10 offset-md-2">
+  <br></br>
+  <br></br>
+  
+  <h2>Your Claims..</h2>
+  
+  <table class="table table-bordered-dark">
+    <thead style="background-color:rgb(192, 172, 206);">
+      <tr>
+        <th scope="col">ClaimNumber</th>
+        <th scope="col">DateofCreation</th>
+        <th scope="col">DeduceEmailAddress</th>
+        <th scope="col">DTNumber</th>
+        <th scope="col">Department</th>
+        <th scope="col">Manager</th>
+        <th scope="col">ExpenseDetails</th>
+        <th scope="col">Status</th>
+        <th scope="col">AccountStatus</th>
+        <th scope="col">PaymentStatus</th>
+      </tr>
+    </thead>
+    <tbody>
+
+{% for n in parentclaimdata %}
+<tr style="background-color:rgb(220, 231, 180);">
+  <td><a href="{% url 'showclaim' n.ClaimNumber %}">{{ n.ClaimNumber }}</a></td>
+  <td>{{ n.DateofCreation }}</td>
+  <td>{{ n.DeduceEmailAddress }}</td>
+  <td>{{ n.DTNumber }}</td>
+  <td>{{ n.Department }}</td>
+  <td>{{ n.Manager }}</td>
+  <td>{{ n.ExpenseDetails }}</td>
+  
+  
+  <td>
+    {% with claim_status=n.claimstatus_set.first %}
+    {% if claim_status %}
+
+      {% if claim_status.status == 'Submitted' %}
+        <button type="button" class="btn btn-warning">{{ claim_status.status }}</button>
+      {% elif claim_status.status == 'ReSubmitted' %}
+      <button type="button" class="btn btn-warning">{{ claim_status.status }}</button>
+      {% elif claim_status.status == 'Rejected' %}
+        <button type="button" class="btn btn-danger">{{ claim_status.status }}</button>    
+      
+      {% elif claim_status.status == 'Approved'  %}
+        <button type="button" class="btn btn-success">{{ claim_status.status }}</button>
+      {% endif %}
+
+      {% else %}
+        <button type="button" class="btn btn-warning">Submitted</button>
+      {% endif %}
+   {% endwith %} 
+  </td>
+  <td>
+    {% for status in n.claimstatus_set.all %}
+    <input type="text" name="accountstatus" class="form-control" value="{{ status.accountstatus }}" readonly>
+        
+   {% endfor %}
+</td>
+  <td>
+  {% for status in n.claimstatus_set.all %}
+  <input type="text" name="paymentstatus" class="form-control" value="{{ status.paymentstatus }}" readonly>     
+  {% endfor %} 
+  </td>
+
+</tr>
+
+{% endfor %}
+
+
+
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}
+  

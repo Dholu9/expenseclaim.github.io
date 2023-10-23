@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}User Claims{% endblock %}
+{% block content %}
+<br></br>
+<div class="col-10 offset-md-2">
+  <br></br>
+  <br></br>
+  <table class="table table-bordered-dark">
+    <thead style="background-color:rgb(207, 219, 224);">
+    <tr>
+        <th scope="col">Claim Number</th>
+        <th scope="col">Date of Creation</th>
+        <th scope="col">DT Number</th>
+        <th scope="col">Deduce Email Address</th>
+        <th scope="col">Expense Details</th>
+        <th scope="col">Department</th>
+        <th scope="col">Manager</th>
+        <th scope="col">AccountsStatus</th>
+        <th scope="col">PaymentStatus</th>
+        
+      </tr>
+    </thead>
+    
+    <tbody>
+      {% for n in parentclaimdata %}
+        <tr style="background-color:rgb(239, 244, 247);">     
+          <td style="text-align: center;">
+            <a href="{% url 'entereddata3' n.ClaimNumber %}">{{ n.ClaimNumber }}</a>
+          </td>
+          <td>{{ n.DateofCreation }}</td>
+          <td>{{ n.user.last_name }}</td>
+          <td>{{ n.user.email }}</td>
+          <td>{{ n.ExpenseDetails }}</td>
+          <td>{{ n.Department }}</td>
+          <td>{{ n.Manager }}</td>
+          <td>
+            {% for status in n.claimstatus_set.all %}
+            {% if status.accountstatus == 'Accepted' %}
+            <a href="{% url 'entereddata3' n.ClaimNumber %}">{{ status.accountstatus }}</a>
+            {% elif status.accountstatus == 'Rejected' %}
+            <a href="{% url 'entereddata3' n.ClaimNumber %}">{{ status.accountstatus }}</a>             
+            {% else %}
+            <a href="{% url 'entereddata3' n.ClaimNumber %}">Pending</a>   
+            {% endif %}                       
+            {% endfor %}
+          </td>
+          <td>
+            {% for status in n.claimstatus_set.all %}
+            {% if status.paymentstatus == 'PaymentDone' %}
+            <span style="font-weight: bold; color: rgb(18, 185, 68);">{{ status.paymentstatus }}</span>
+            {% else %}
+            <span style="font-weight: bold; color: rgb(104, 97, 93);">Pending</span>
+            {% endif %}                        
+            {% endfor %}
+          </td>
+          
+        </tr>
+        <script>
+          function disableButton(event) {
+            var button = event.target;
+            button.disabled = true;
+            button.innerHTML = "Processing...";
+          }
+        
+          function toggleComments() {
+            var statusDropdowns = document.querySelectorAll(".accountstatus-dropdown");
+            var commentsDivs = document.querySelectorAll(".accountscomments-div");
+
+            statusDropdowns.forEach(function (dropdown, index) {
+              if (dropdown.value === "Rejected") {
+                commentsDivs[index].style.display = "block";
+              } else {
+                commentsDivs[index].style.display = "none";
+              }
+            });
+          }
+
+          // Attach an event listener to all status dropdowns to toggle comments visibility
+          var statusDropdowns = document.querySelectorAll(".accountstatus-dropdown");
+          statusDropdowns.forEach(function (dropdown) {
+            dropdown.addEventListener("change", toggleComments);
+          });
+
+          // Initialize the visibility based on the initial selections
+          toggleComments();
+        </script>
+      {% empty %}
+        <tr>
+          <td colspan="7">No approved claims found.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

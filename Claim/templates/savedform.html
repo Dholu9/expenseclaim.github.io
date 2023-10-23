@@ -1,0 +1,335 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}User Claims{% endblock %}
+{% block content %}
+<br></br>
+<style>
+  
+  .box-container {
+    margin-bottom: 50px;
+  }
+
+  .parent-form-box {
+    border: 1px solid #0f053b;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #d8e3e9;
+    margin-bottom: 5%;
+  }
+</style>
+
+
+
+
+<div class="col-md-6 offset-md-3">
+  <div class="parent-form-box">
+  <!-- Parent Model Form -->
+  <form method="post" action="{% url 'updaterecord' parentclaimdata.ClaimNumber %}" class="row g-3" enctype="multipart/form-data">
+    {% csrf_token %}
+
+<!-- Display comments if they exist -->
+  {% if comments %}
+  <div class="col-12">
+    <label for="Comments" class="form-label">ManagerComments</label>
+    <textarea class="form-control" id="Comments" name="Comments" rows="1" readonly>{{ comments }}</textarea>
+  </div>
+  {% endif %}
+
+    <div class="col-md-6">
+      <label for="ClaimNumber" class="form-label">ClaimNumber</label>
+      <input type="number" class="form-control" id="ClaimNumber" name="ClaimNumber" value="{{parentclaimdata.ClaimNumber}}" readonly>
+    </div>
+    <div class="col-md-6">
+      <label for="DateofCreation" class="form-label">DateofCreation</label>
+      <input type="DateofCreation" class="form-control" id="DateofCreation" name="DateofCreation" value="{{parentclaimdata.DateofCreation}}" readonly>
+    </div>
+
+    <div class="col-12">
+      <label for="EmployeeName" class="form-label">EmployeeName</label>
+      <input type="text" class="form-control" id="EmployeeName" name="EmployeeName" value="{{first_name}}" readonly>
+    </div>
+  
+    <div class="col-12">
+      <label for="DTNumber" class="form-label">DTNumber</label>
+      <input type="text" class="form-control" id="DTNumber" name="DTNumber" value="{{last_name}}" readonly>
+    </div>
+
+    <br></br>
+    <br></br>
+
+    <div class="col-md-4">
+      <label for="Department" class="form-label">Department</label>
+      <select id="Department" class="form-select" name="Department" readonly disabled>
+        <option value="GIS" {% if parentclaimdata.Department == "GIS" %}selected{% endif %}>GIS</option>
+        <option value="DEVELOPMENT" {% if parentclaimdata.Department == "DEVELOPMENT" %}selected{% endif %}>DEVELOPMENT</option>
+        <option value="HR" {% if parentclaimdata.Department == "HR" %}selected{% endif %}>HR</option>
+        <option value="IT" {% if parentclaimdata.Department == "IT" %}selected{% endif %}>IT</option>
+        <option value="ADMIN" {% if parentclaimdata.Department == "ADMIN" %}selected{% endif %}>ADMIN</option>
+        <option value="ACCOUNTS" {% if parentclaimdata.Department == "ACCOUNTS" %}selected{% endif %}>ACCOUNTS</option>
+      </select>
+    </div>
+
+
+    <div class="col-md-4">
+      <label for="Manager" class="form-label">Manager</label>
+      <select id="Manager" class="form-select" name="Manager" readonly disabled>
+        <option value="Prabhakara Reddy G V" {% if parentclaimdata.Manager == "Prabhakara Reddy G V" %}selected{% endif %}>Prabhakara Reddy G V</option>
+        <option value="Sanjay MS" {% if parentclaimdata.Manager == "Sanjay MS" %}selected{% endif %}>Sanjay MS</option>
+        <option value="Brajesh Shrivastava" {% if parentclaimdata.Manager == "Brajesh Shrivastava" %}selected{% endif %}>Brajesh Shrivastava</option>
+        <option value="Mahima Shrivastava" {% if parentclaimdata.Manager == "Mahima Shrivastava" %}selected{% endif %}>Mahima Shrivastava</option>
+      </select>
+    </div>
+
+    <div class="col-12">
+      <label for="ExpenseDetails" class="form-label">ExpenseDetails</label>
+      <input type="text" class="form-control" id="ExpenseDetails" name="ExpenseDetails" value="{{parentclaimdata.ExpenseDetails}}" readonly>
+    </div>
+
+    <div class="col-12">
+      <label for="TotalClaimAmount" class="form-label">TotalClaimAmount</label>
+      <div class="input-group mb-3">
+          <span class="input-group-text">Rs</span>
+          <input type="number" class="form-control" aria-label="Rupees amount (with dot and two decimal places)" id="TotalClaimAmount" name="TotalClaimAmount" value="{{ total_claim_amount }}" readonly>
+      </div>
+    </div>
+    
+    <br>
+    <br>
+    {% for m in childclaimdata %}
+  {% if forloop.first %}
+    <!-- Skip the first row -->
+  {% else %}
+  <style>
+    .box-container {
+      margin-bottom: 20px;
+    }
+  
+    .child-form-box {
+      border: 1px solid #0f053b;
+      border-radius: 5px;
+      padding: 10px;
+      background-color: #eeeee3;
+      margin-bottom: 5%;
+    }
+  </style>
+
+    <div class="col-12">
+      <div class="child-form-container">
+        <div class="child-form-box">
+        <div class="child-form-section">
+          <div class="col-12">
+            <label for="ReceiptNumber{{ forloop.counter }}" class="form-label">ReceiptNumber</label>
+            <input type="text" class="form-control" id="ReceiptNumber{{ forloop.counter }}" name="ReceiptNumber" value="{{ m.ReceiptNumber }}" readonly>
+          </div>
+
+          <div class="col-12">
+            <label for="ReceiptDate{{ forloop.counter }}" class="form-label">ReceiptDate</label>
+            <input type="date" class="form-control" id="ReceiptDate{{ forloop.counter }}" name="ReceiptDate" value="{{ m.ReceiptDate|date:'Y-m-d' }}" readonly min="{{ minDate }}" max="{{ maxDate }}">
+          </div>
+
+
+        <style>
+          .green-link {
+              color: green; 
+              text-decoration: none; 
+          }
+
+          .green-link:hover {
+              text-decoration: underline; 
+          }
+
+          .red-link {
+              color: red; 
+              text-decoration: none; 
+          }
+
+          .red-link:hover {
+              text-decoration: underline;
+          }
+          .small-font {
+              font-size: 14px; 
+          }
+          .small-font2 {
+                    font-size: 12px; 
+                    color: #2a063f; 
+                    margin-top: 5px; 
+                }
+      </style>
+
+
+
+    <div class="col-12">
+      <label for="BillAttachment" class="form-label">BillAttachment</label>
+      <input class="form-control" type="file" id="BillAttachment_{{ forloop.counter }}" name="BillAttachment" accept=".pdf,.jpeg,.jpg,.tif,.tiff" maxsize="2097152" readonly disabled>
+      <span id="selectedFileName_{{ forloop.counter }}"></span>
+      <p class="small-font2">Accepted file formats: PDF, JPEG, JPG, TIF, TIFF<br>Maximum file size: 2MB</p>
+    </div>
+
+
+    <div class="col-md-6">
+      {% if m.BillAttachment %}
+        <a href="{{ m.BillAttachment.url }}" target="_blank" id="bill_{{ forloop.counter }}" class="small-font">{{ m.BillAttachment.name|slice:"-10:" }}</a>
+      
+        <a href="{{ m.BillAttachment.url }}" download="{{ m.BillAttachment.name }}" class="green-link">
+          <i class="fa fa-download"></i> Download
+        </a>
+    
+        <button class="delete-button" id="delete_{{ forloop.counter }}" data-bill-attachment-id="{{ forloop.counter }}" style="background-color: rgb(202, 44, 44); color: rgb(238, 212, 212); padding: 1px 5px; font-size: 12px;" readonly disabled>
+          Delete
+        </button>
+      {% else %}
+        No existing bill attachment
+      {% endif %}
+    </div>
+    <br>
+
+
+  
+          <div class="col-md-4">
+            <label for="ExpenseHead{{ forloop.counter }}" class="form-label">ExpenseHead</label>
+            <select id="ExpenseHead{{ forloop.counter }}" class="form-select" name="ExpenseHead" readonly disabled>
+                <option value="SELECT" {% if m.ExpenseHead == "SELECT" %}selected{% endif %}>SELECT</option>
+                <option value="Travel" {% if m.ExpenseHead == "Travel" %}selected{% endif %}>Travel</option>
+                <option value="Flight" {% if m.ExpenseHead == "Flight" %}selected{% endif %}>&nbsp; Flight</option>
+                <option value="Car" {% if m.ExpenseHead == "Car" %}selected{% endif %}>&nbsp; Car</option>
+                <option value="Food" {% if m.ExpenseHead == "Food" %}selected{% endif %}>Food</option>
+                <option value="Fuel" {% if m.ExpenseHead == "Fuel" %}selected{% endif %}>Fuel</option>
+                <option value="Others" {% if m.ExpenseHead == "Others" %}selected{% endif %}>Others</option>
+            </select>
+        </div>
+
+          <div class="col-10">
+            <label for="ClaimAmount{{ forloop.counter }}" class="form-label">ClaimAmount</label>
+            <div class="input-group mb-3">
+              <span class="input-group-text">Rs</span>
+              <input type="text" class="form-control" aria-label="Rupees amount (with dot and two decimal places)" name="ClaimAmount" value="{{ m.ClaimAmount }}" readonly>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <label for="Remarks{{ forloop.counter }}" class="form-label">Remarks</label>
+            <input type="text" class="form-control py-4" id="Remarks{{ forloop.counter }}" name="Remarks" value="{{ m.Remarks }}" readonly>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+{% endfor %}
+</div>
+
+
+  {% if is_rejected %}
+  <div class="offset-md-10">
+  <button type="button" id="edit-button" class="btn btn-primary">Edit</button>
+
+    <button type="submit" name="action" value="submit" class="btn btn-primary">Submit</button>
+   
+  </div>
+  {% endif %}
+     
+</form>
+
+<script>
+  function calculateTotalClaimAmount() {
+    var claimAmountInputs = document.querySelectorAll('input[name="ClaimAmount"]');
+    var totalClaimAmountInput = document.getElementById('TotalClaimAmount');
+    var totalClaimAmount = 0;
+
+    claimAmountInputs.forEach(function (input) {
+      var claimAmount = parseFloat(input.value) || 0;
+      totalClaimAmount += claimAmount;
+    });
+
+    totalClaimAmountInput.value = totalClaimAmount.toFixed(2);
+  }
+
+  // Call the calculateTotalClaimAmount function on page load
+  window.addEventListener('load', calculateTotalClaimAmount);
+
+  // Listen for changes in child claim amounts and recalculate the total
+  document.addEventListener('input', function (event) {
+    if (event.target.name === 'ClaimAmount') {
+      calculateTotalClaimAmount();
+    }
+  });
+
+  document.addEventListener("click", function(event) {
+  if (event.target.matches("#edit-button")) {
+    var formControlFields = document.querySelectorAll(".form-control:not(#ClaimNumber):not(#DateofCreation):not(#Comments):not(#TotalClaimAmount):not(#EmployeeName):not(#DTNumber)");
+    var formSelectFields = document.querySelectorAll(".form-select");
+    var deleteFields = document.querySelectorAll(".delete-button");
+    
+  
+
+    for (var i = 0; i < formControlFields.length; i++) {
+      // Enable editing for other form fields by removing the readonly attribute.
+      formControlFields[i].readOnly = false;
+      formControlFields[i].removeAttribute("readonly");
+    }
+
+    for (var j = 0; j < formSelectFields.length; j++) {
+      // Enable editing for select fields by removing the disabled attribute.
+      formSelectFields[j].disabled = false;
+      formSelectFields[j].removeAttribute("disabled");
+    }
+
+    for (var u = 0; u < deleteFields.length; u++) {
+      // Enable editing for select fields by removing the disabled attribute.
+      deleteFields[u].disabled = false;
+      deleteFields[u].removeAttribute("disabled");
+    }
+
+    
+  }
+});
+
+document.addEventListener("click", function(event) {
+  if (event.target.matches(".delete-button")) {
+    // Get the associated bill attachment ID
+    var billAttachmentId = event.target.getAttribute("data-bill-attachment-id");
+
+    // Find the element with the corresponding ID and hide it
+    var billAttachmentElement = document.getElementById('bill_' + billAttachmentId);
+    if (billAttachmentElement) {
+      billAttachmentElement.style.display = "none";
+    }
+
+    // Enable the "Choose File" input by removing the 'disabled' attribute
+    var fileInput = document.getElementById('BillAttachment_' + billAttachmentId);
+    if (fileInput) {
+      fileInput.removeAttribute("disabled");
+      fileInput.removeAttribute("readonly"); // Optionally remove readonly attribute
+    }
+
+    // Prevent the default button behavior to avoid form submission
+    event.preventDefault();
+  }
+});
+
+
+
+
+  // Apply the date range logic to all ReceiptDate fields within the childclaimdata loop
+  var currentDate = new Date();
+
+  // Calculate one month before the current date
+  currentDate.setMonth(currentDate.getMonth() - 1);
+
+  // Format the date in 'YYYY-MM-DD' format
+  var oneMonthBeforeNow = currentDate.toISOString().split('T')[0];
+
+  // Get all ReceiptDate fields
+  var receiptDateFields = document.querySelectorAll('input[name^="ReceiptDate"]');
+  receiptDateFields.forEach(function (field) {
+    // Set the 'max' attribute to today's date
+    var today = new Date().toISOString().split('T')[0];
+    field.setAttribute('max', today);
+
+    // Set the 'min' attribute to one month before today
+    field.setAttribute('min', oneMonthBeforeNow);
+  });
+</script>
+  
+{% endblock %}
+

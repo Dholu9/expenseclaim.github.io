@@ -1,0 +1,44 @@
+{% extends 'base.html' %} 
+{% load static %}
+
+    {% block title %}Expense Claim Tracking{% endblock %}
+
+    {% block content %} 
+    <div class="align-left-box">
+        <img src="/static/logo.jpg" class="img-fluid" alt="" width="100%">
+        <!-- Links inside the align-left box -->
+        <ul class="nav flex-column">
+          
+  
+  
+        
+                
+       
+          <li class="nav-item">
+            
+            <br></br>
+            <p style="font-size:20px;">Hi, {{ user.username }}!</p>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'demo' %}">
+            Claims
+          </a>
+      </li>
+      <li class="nav-item">
+      {% for item in claimdata %}
+      <a class="nav-link" href="{% url 'demo2' item.ClaimNumber %}">ClaimNumber:{{ item.ClaimNumber }}</a>
+    </li>
+      
+      {% endfor %} 
+          
+            
+      </ul>
+    </div>
+    
+
+
+
+
+
+
+    {% endblock %} 

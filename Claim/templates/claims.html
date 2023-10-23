@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Expense Claim Tracking{% endblock %}
+
+{% block content %}
+
+<div class="col-10 offset-md-2">
+  <br></br>
+  <br></br>
+
+  <table class="table">
+      <thead style="background-color: rgb(207, 219, 224);">
+          <tr>
+              <th scope="col">Team</th>
+              <th scope="col">Pending</th>
+              <th scope="col">Approved</th>
+              <th scope="col">PaymentDue</th>
+          </tr>
+      </thead>
+      <tbody style="background-color: rgb(239, 244, 247);">
+        {% for user_count in user_count_list %}
+        <tr>
+          <td>
+            <a href="{% url 'accountsview' user_count.username %}" style="text-decoration: none;">
+              <div>{{ user_count.username }}</div>
+            </a>
+          </td>
+
+          <td style="font-weight: bold; color: rgb(19, 52, 65);">
+            <div>{{ user_count.submitted_count }}</div>
+          </td>
+
+          <td style="font-weight: bold; color: rgb(32, 148, 42);">
+            <div>{{ user_count.approved_count }}</div>
+          </td>
+
+          <td style="font-weight: bold; color: rgb(180, 61, 61);">
+            <div>{{ user_count.paymentdue_counts }}</div>
+          </td>
+
+          
+          
+        </tr>
+        {% endfor %}
+      </tbody>
+      
+      
+  </table>
+</div>
+
+{% endblock %}

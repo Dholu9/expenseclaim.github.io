@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+
+{% block title %}Expense Claim Tracking{% endblock %}
+
+{% block content %} 
+
+<div class="col-10 offset-md-2">
+    <br></br>
+    <br></br>
+    
+    <h2></h2>
+    
+    <table class="table table-bordered-dark">
+      <thead style="background-color:rgb(207, 219, 224);">
+        <tr>
+          <th scope="col">ClaimNumber</th>
+          <th scope="col">DateofCreation</th>
+          <th scope="col">DeduceEmailAddress</th>
+          <th scope="col">DTNumber</th>
+          <th scope="col">Department</th>
+          <th scope="col">Manager</th>
+          <th scope="col">ExpenseDetails</th>
+          <th scope="col">Status</th>
+          <th scope="col">AccountStatus</th>
+          <th scope="col">PaymentStatus</th>
+        </tr>
+      </thead>
+      
+      <tbody>
+        {% for n in parentclaimdata %}
+        
+        <tr style="background-color:rgb(239, 244, 247);">
+          <td style="text-align: center;">
+            <a href="{% url 'entereddata2' n.ClaimNumber %}">{{ n.ClaimNumber }}</a>
+          </td>        
+          <td>{{n.DateofCreation}}</td>
+          <td>{{n.user.email}}</td>
+          <td>{{n.user.last_name}}</td>
+          <td>{{n.Department}}</td>
+          <td>{{n.Manager}}</td>
+          <td>{{n.ExpenseDetails}}</td>
+          <td>
+            {% if n.claimstatus_set.all %}
+            {% for status in n.claimstatus_set.all %}
+              {% if status.status == 'Approved' %}
+                <a href="{% url 'entereddata2' n.ClaimNumber %}">{{ status.status }}</a>
+              {% elif status.status == 'Rejected' %}
+                <a href="{% url 'entereddata2' n.ClaimNumber %}">{{ status.status }}</a>
+              {% elif status.status == 'ReSubmitted' %}
+              <a href="{% url 'entereddata2' n.ClaimNumber %}">{{ status.status }}</a>
+              {% endif %}
+            {% endfor %}
+          {% else %}
+            <a href="{% url 'entereddata2' n.ClaimNumber %}">Pending</a>
+          {% endif %}
+         </td>
+          
+          <td>
+            {% for status in n.claimstatus_set.all %}
+            {% if status.accountstatus == 'Accepted' %}
+            <span style="font-weight: bold; color: rgb(18, 185, 68);">{{ status.accountstatus }}</span>
+            {% elif status.accountstatus == 'Rejected' %}
+            <span style="font-weight: bold; color: red;">{{ status.accountstatus }}</span>
+            {% else %}
+            <span style="font-weight: bold; color: rgb(104, 97, 93);">Pending</span>
+            {% endif %}
+            {% empty %}
+            <span style="font-weight: bold; color: rgb(104, 97, 93);">Pending</span>                   
+            {% endfor %}
+          </td>
+          <td>
+            {% for status in n.claimstatus_set.all %}
+            {% if status.paymentstatus == 'PaymentDone' %}
+            <span style="font-weight: bold; color: rgb(18, 185, 68);">{{ status.paymentstatus }}</span>
+            {% else %}
+            <span style="font-weight: bold; color: rgb(104, 97, 93);">Pending</span>
+            {% endif %} 
+            {% empty %}
+            <span style="font-weight: bold; color: rgb(104, 97, 93);">Pending</span>                        
+            {% endfor %}                         
+          
+          </td>
+        </tr>
+        
+      
+        {% endfor %}
+      </tbody>
+    </table>
+    
+</div>
+
+{% endblock %}
+
+
+

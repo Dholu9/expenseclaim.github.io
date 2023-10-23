@@ -1,0 +1,16 @@
+body {
+  background-color: lightgray;
+}
+
+.box {
+  background-color: #e2b6b6;
+  border: 1px solid #771414;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.box p {
+  color: #bb9999;
+  font-size: 18px;
+  margin-bottom: 10px;
+}

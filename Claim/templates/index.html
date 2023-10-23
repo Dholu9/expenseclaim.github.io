@@ -1,0 +1,60 @@
+{% extends 'base.html' %} 
+{% load static %}
+
+    {% block title %}Expense Claim Tracking{% endblock %}
+
+    {% block content %} 
+
+    <style>
+      .container-box {
+        border: 2px solid #333; /* You can adjust the color and width */
+        border-radius: 10px; /* To round the corners of the border */
+        padding: 10px; /* Add some padding for spacing */
+      }
+    </style>
+
+    {% if user.is_authenticated %} 
+   
+    <link rel="stylesheet" href="{% static 'mystyle.css' %}"> 
+    {% else %} 
+    <body style="background-color:rgb(226, 231, 241);">
+      
+      <div class="col-md-2 offset-md-5">
+        
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <div class="container-box">
+        
+        
+        <img src="/static/logo.jpg" class="img-fluid" alt="" width="100%">
+        <p style="color:rgb(30, 8, 112);font-size:25px;">Expense Claim Portal</p>
+
+        
+        
+        <form method="post">
+          {% csrf_token %} 
+          <div class="box">
+            <p>
+              <div class="mb-3" >
+                <label for="last_name" class="form-label" style="font-size:15px;">DTNumber</label>
+                <input type="text" class="form-control" name="last_name">
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label" style="font-size:15px;">Password</label>
+                <input type="password" class="form-control" name="password"><br>
+              </div>
+              <button type="submit" class="btn btn-primary" style="color:rgb(32, 30, 30);background-color:rgb(141, 198, 236)">Login</button>
+            </p>
+          </div>
+        </div>
+        </form>
+      </div>
+    
+  </body>
+  
+  
+    {% endif %} 
+
+    {% endblock %} 

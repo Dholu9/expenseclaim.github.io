@@ -1,0 +1,18 @@
+
+      .oval-link {
+          /* Your existing CSS properties */
+          width: 40px;
+          height: 20px;
+          line-height: 20px;
+          text-align: center;
+          border-radius: 10px;
+          background-color: #14273b;
+          color: #fff;
+          text-decoration: none;
+          display: inline-block;
+          transition: background-color 0.3s;
+
+          /* New property for center alignment */
+          text-align: center;
+        }
+

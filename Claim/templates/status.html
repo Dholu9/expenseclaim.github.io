@@ -1,0 +1,58 @@
+{% extends 'base.html' %} 
+
+    {% block title %}Data{% endblock %}
+
+    {% block content %} 
+
+    
+
+    
+    
+    <div class="col-md-8 offset-md-2">
+      <br></br>
+      <br></br>
+      
+        
+      <table class="table table-bordered-dark">
+        <thead style="background-color:rgb(61, 210, 230);">
+          <tr>
+            
+            <th scope="col">ClaimNumber</th>
+            <th scope="col">ExpenseHead</th>
+            <th scope="col">ReceiptDate</th>
+            <th scope="col">ClaimAmount</th>
+            <th scope="col">ClaimStatus</th>
+            
+            </tr>
+        </thead>
+        <tbody>
+          {% for n in statusdata %}
+          <tr style="background-color:rgb(238, 209, 115);">
+            
+            <td>{{n.ClaimNumber}}</td>
+            <td>{{n.ExpenseHead}}</td>
+            <td>{{n.ReceiptDate}}</td>
+            <td>{{n.ClaimAmount}}</td>
+            <td>Submitted</td>
+            
+        </tr>
+          {% endfor %}
+          
+        </tbody>
+      </table>
+      
+          
+        </div> 
+        
+        
+      </div>
+      
+      
+      
+    
+    
+
+    
+    
+    
+ {% endblock %}

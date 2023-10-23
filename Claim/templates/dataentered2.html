@@ -1,0 +1,288 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}User Claims{% endblock %}
+{% block content %}
+<br></br>
+<style>
+  .box-container {
+    margin-bottom: 50px;
+  }
+
+  .parent-form-box {
+    border: 1px solid #0f053b;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #d8e3e9;
+    margin-bottom: 5%;
+  }
+</style>
+
+<div class="col-md-6 offset-md-3">
+  <div class="parent-form-box">
+  <!-- Parent Model Form -->
+  <form method="post" action="{% url 'updaterecord' parentclaimdata.ClaimNumber %}" class="row g-3">
+    {% csrf_token %}
+
+    <!-- Display comments if they exist -->
+  {% if accountscomments %}
+  <div class="col-12">
+    <label for="AccountsComments" class="form-label">AccountsComments</label>
+    <textarea class="form-control" id="AccountsComments" name="AccountsComments" rows="1" readonly>{{ accountscomments }}</textarea>
+  </div>
+  {% endif %}
+    
+    <div class="col-md-6">
+      <label for="ClaimNumber" class="form-label">ClaimNumber</label>
+      <input type="number" class="form-control" id="ClaimNumber" name="ClaimNumber" value="{{parentclaimdata.ClaimNumber}}" readonly>
+    </div>
+    <div class="col-md-6">
+      <label for="DateofCreation" class="form-label">DateofCreation</label>
+      <input type="DateofCreation" class="form-control" id="DateofCreation" name="DateofCreation" value="{{parentclaimdata.DateofCreation}}" readonly>
+    </div>
+    
+    <div class="col-12">
+      <label for="EmployeeName" class="form-label">EmployeeName</label>
+      <input type="text" class="form-control" id="EmployeeName" name="EmployeeName" value="{{first_name}}" readonly>
+    </div>
+
+
+    <div class="col-12">
+      <label for="DTNumber" class="form-label">DTNumber</label>
+      <input type="text" class="form-control" id="DTNumber" name="DTNumber" value="{{last_name}}" readonly>
+    </div>
+
+    <br></br>
+    <br></br>
+
+  
+    <div class="col-md-4">
+      <label for="Department" class="form-label">Department</label>
+      <select id="Department" class="form-select" name="Department" readonly disabled>
+        <option value="GIS" {% if parentclaimdata.Department == "GIS" %}selected{% endif %}>GIS</option>
+        <option value="DEVELOPMENT" {% if parentclaimdata.Department == "DEVELOPMENT" %}selected{% endif %}>DEVELOPMENT</option>
+        <option value="HR" {% if parentclaimdata.Department == "HR" %}selected{% endif %}>HR</option>
+        <option value="IT" {% if parentclaimdata.Department == "IT" %}selected{% endif %}>IT</option>
+        <option value="ADMIN" {% if parentclaimdata.Department == "ADMIN" %}selected{% endif %}>ADMIN</option>
+        <option value="ACCOUNTS" {% if parentclaimdata.Department == "ACCOUNTS" %}selected{% endif %}>ACCOUNTS</option>
+      </select>
+    </div>
+
+
+    <div class="col-md-4">
+      <label for="Manager" class="form-label">Manager</label>
+      <select id="Manager" class="form-select" name="Manager" readonly disabled>
+        <option value="Prabhakara Reddy G V" {% if parentclaimdata.Manager == "Prabhakara Reddy G V" %}selected{% endif %}>Prabhakara Reddy G V</option>
+        <option value="Sanjay MS" {% if parentclaimdata.Manager == "Sanjay MS" %}selected{% endif %}>Sanjay MS</option>
+        <option value="Brajesh Shrivastava" {% if parentclaimdata.Manager == "Brajesh Shrivastava" %}selected{% endif %}>Brajesh Shrivastava</option>
+        <option value="Mahima Shrivastava" {% if parentclaimdata.Manager == "Mahima Shrivastava" %}selected{% endif %}>Mahima Shrivastava</option>
+      </select>
+    </div>
+
+    <div class="col-12">
+      <label for="ExpenseDetails" class="form-label">ExpenseDetails</label>
+      <input type="text" class="form-control" id="ExpenseDetails" name="ExpenseDetails" value="{{parentclaimdata.ExpenseDetails}}" readonly>
+    </div>
+
+    <div class="col-12">
+      <label for="TotalClaimAmount" class="form-label">TotalClaimAmount</label>
+      <div class="input-group mb-3">
+          <span class="input-group-text">Rs</span>
+          <input type="number" class="form-control" aria-label="Rupees amount (with dot and two decimal places)" id="TotalClaimAmount" name="TotalClaimAmount" value="{{ total_claim_amount }}" readonly>
+      </div>
+    </div>
+    
+    <br>
+    <br>
+    {% for m in childclaimdata %}
+    {% if forloop.first %}
+    <!-- Skip the first row -->
+    {% else %}
+    <style>
+      .box-container {
+        margin-bottom: 20px;
+      }
+    
+      .child-form-box {
+        border: 1px solid #0f053b;
+        border-radius: 5px;
+        padding: 10px;
+        background-color: #eeeee3;
+        margin-bottom: 5%;
+      }
+    </style>
+    
+    <div class="col-12 ">
+      <div class="child-form-container">
+        <div class="child-form-box">
+        <div class="child-form-section">
+          <div class="col-12">
+            <label for="ReceiptNumber{{ forloop.counter }}" class="form-label">ReceiptNumber</label>
+            <input type="text" class="form-control" id="ReceiptNumber{{ forloop.counter }}" name="ReceiptNumber" value="{{ m.ReceiptNumber }}" readonly>
+          </div>
+
+  
+          <div class="col-12">
+            <label for="ReceiptDate{{ forloop.counter }}" class="form-label">ReceiptDate</label>
+            <input type="date" class="form-control" id="ReceiptDate{{ forloop.counter }}" name="ReceiptDate" value="{{ m.ReceiptDate|date:'Y-m-d' }}" readonly>
+          </div>
+          <style>
+            .green-link {
+                color: green; 
+                text-decoration: none; 
+            }
+  
+            .green-link:hover {
+                text-decoration: underline; 
+            }
+
+            .red-link:hover {
+                text-decoration: underline;
+            }
+            .small-font {
+                font-size: 14px; 
+            }
+           
+        </style> 
+        
+   
+        <div class="col-md-6">
+          <label for="BillAttachment{{ forloop.counter }}" class="form-label">BillAttachment</label>
+          {% if m.BillAttachment %}
+            <a href="{{ m.BillAttachment.url }}" target="_blank" class="small-font">{{ m.BillAttachment.name|slice:"-10:" }} </a>
+            <a href="{{ m.BillAttachment.url }}" download="{{ m.BillAttachment.name }}" class="green-link">
+              <i class="fa fa-download"></i> Download
+            </a>
+          {% else %}
+            No bill
+          {% endif %}
+        </div>
+
+          <div class="col-md-4">
+            <label for="ExpenseHead{{ forloop.counter }}" class="form-label">ExpenseHead</label>
+            <select id="ExpenseHead{{ forloop.counter }}" class="form-select" name="ExpenseHead" readonly disabled>
+                <option value="SELECT" {% if m.ExpenseHead == "SELECT" %}selected{% endif %}>SELECT</option>
+                <option value="Travel" {% if m.ExpenseHead == "Travel" %}selected{% endif %}>Travel</option>
+                <option value="Flight" {% if m.ExpenseHead == "Flight" %}selected{% endif %}>&nbsp; Flight</option>
+                <option value="Car" {% if m.ExpenseHead == "Car" %}selected{% endif %}>&nbsp; Car</option>
+                <option value="Food" {% if m.ExpenseHead == "Food" %}selected{% endif %}>Food</option>
+                <option value="Fuel" {% if m.ExpenseHead == "Fuel" %}selected{% endif %}>Fuel</option>
+                <option value="Others" {% if m.ExpenseHead == "Others" %}selected{% endif %}>Others</option>
+            </select>
+        </div>
+        
+          <div class="col-10">
+            <label for="ClaimAmount" class="form-label">ClaimAmount</label>
+            <div class="input-group mb-3">
+              <span class="input-group-text">Rs</span>
+              <input type="text" class="form-control" aria-label="Rupees amount (with dot and two decimal places)"  name="ClaimAmount" value="{{ m.ClaimAmount }}" readonly>
+            </div>
+          </div>
+
+          
+          <div class="col-md-6">
+            <label for="remarks{{ forloop.counter }}" class="form-label">Remarks</label>
+            <input type="text" class="form-control py-4" id="remarks{{ forloop.counter }}" name="Remarks" value="{{ m.Remarks }}" readonly>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    {% endif %}
+  {% endfor %}
+</div>
+
+  
+  {% if is_rejected %}
+  <div class="offset-md-6">
+  <button type="button" id="edit-button" class="btn btn-primary">Edit</button>
+  </div>
+ 
+  <div class="offset-md-6">
+    <button type="submit" name="action" value="submit" class="btn btn-primary">Submit</button>
+   
+  </div>
+  {% endif %}
+     
+</form>
+
+
+<style>
+  .status-dropdown {
+    width: 150px;
+  }
+
+  .comments-div {
+    display: none;
+    width: 600px;
+
+  }
+
+  .comments-div input[type="text"] {
+    width: 100%;
+    height: 5px;
+  }
+</style>
+
+<form method="post" action="{% url 'review_claim' parentclaimdata.ClaimNumber %}" onsubmit="disableButton(event)">
+  {% csrf_token %}
+
+  <div class="form-group">
+    <div class="d-flex align-items-center">
+      <select name="status" class="form-control mr-2 status-dropdown">  
+        <option value="" selected="selected">SELECT</option>   
+        <option value="Approved" {% if n.claimstatus_set.first.accountstatus == 'Approved' %} selected="selected" {% endif %}>Approved</option>
+        <option value="Rejected" {% if n.claimstatus_set.first.accountstatus == 'Rejected' %} selected="selected" {% endif %}>Rejected</option>
+      </select>
+      <div class="comments-div">
+        <textarea name="comments" class="form-control" placeholder="Enter comments" rows="2"></textarea>
+      </div>
+    <div class="offset-md-6">
+      <button type="submit" class="btn btn-primary" id="submit-btn-{{ parentclaimdata.ClaimNumber }}">Submit</button>
+    </div>
+    </div>
+  </div>
+</form>
+
+
+
+{% for status in n.claimstatus_set.all %}
+<input type="text" name="accountstatus" class="form-control" value="{{ status.accountstatus }}" readonly>
+<input type="text" name="accountscomments" class="form-control" value="{{ status.accountscomments }}" readonly>          
+{% endfor %}
+
+{% for status in n.claimstatus_set.all %}
+  {{ status.paymentstatus }} 
+{% endfor %}
+
+<script>
+  function disableButton(event) {
+    var button = document.getElementById("submit-btn-{{ n.ClaimNumber }}");
+    button.disabled = true;
+    button.innerHTML = "Processing...";
+  }
+
+  function toggleComments() {
+    var statusDropdowns = document.querySelectorAll(".status-dropdown");
+    var commentsDivs = document.querySelectorAll(".comments-div");
+
+    // Loop through all status dropdowns and show the corresponding comments div
+    statusDropdowns.forEach(function (dropdown, index) {
+      if (dropdown.value === "Rejected") {
+        commentsDivs[index].style.display = "block";
+      } else {
+        commentsDivs[index].style.display = "block"; // Always show the comments div
+      }
+    });
+  }
+
+  // Attach an event listener to all status dropdowns to toggle comments visibility
+  var statusDropdowns = document.querySelectorAll(".status-dropdown");
+  statusDropdowns.forEach(function (dropdown) {
+    dropdown.addEventListener("change", toggleComments);
+  });
+
+  // Initialize the visibility based on the initial selections
+  toggleComments();
+</script>
+
+{% endblock %}
